@@ -9,6 +9,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/proposta")
@@ -20,7 +21,11 @@ public class ProposalController {
     }
 
     @PostMapping
-    public ResponseEntity<ProposalResponse> addProposal(@Valid @RequestBody ProposalRequest proposalRequest, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<?> addProposal(@Valid @RequestBody ProposalRequest proposalRequest, UriComponentsBuilder uriBuilder){
+        Optional<Proposal> proposalByDocument = proposalRepository.findProposalByDocument(proposalRequest.getDocument());
+        if(proposalByDocument.isPresent()){
+            return ResponseEntity.unprocessableEntity().body("Document already exists");
+        }
         Proposal proposal = proposalRequest.convert();
         proposalRepository.save(proposal);
         URI uri = uriBuilder.path("/proposta/{id}").buildAndExpand(proposal.getId()).toUri();

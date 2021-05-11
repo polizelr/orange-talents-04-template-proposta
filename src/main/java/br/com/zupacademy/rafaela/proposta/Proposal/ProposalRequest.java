@@ -36,4 +36,8 @@ public class ProposalRequest {
     public Proposal convert() {
         return new Proposal(document, email, name, address,salary);
     }
+
+    public String getDocument() {
+        return document;
+    }
 }

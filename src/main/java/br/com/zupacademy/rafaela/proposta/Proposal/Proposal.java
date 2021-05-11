@@ -4,6 +4,11 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(name = "document_unique", columnNames = "document")
+        }
+)
 public class Proposal {
     @Id
     @GeneratedValue(
