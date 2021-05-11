@@ -1,5 +1,7 @@
 package br.com.zupacademy.rafaela.proposta.Proposal;
 
+import br.com.zupacademy.rafaela.proposta.config.exception.ApiRequestException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +26,7 @@ public class ProposalController {
     public ResponseEntity<?> addProposal(@Valid @RequestBody ProposalRequest proposalRequest, UriComponentsBuilder uriBuilder){
         Optional<Proposal> proposalByDocument = proposalRepository.findProposalByDocument(proposalRequest.getDocument());
         if(proposalByDocument.isPresent()){
-            return ResponseEntity.unprocessableEntity().body("Document already exists");
+            throw new ApiRequestException("Document already exists", HttpStatus.UNPROCESSABLE_ENTITY, "document");
         }
         Proposal proposal = proposalRequest.convert();
         proposalRepository.save(proposal);

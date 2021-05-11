@@ -1,10 +1,10 @@
-package br.com.zupacademy.rafaela.proposta.config.validation;
+package br.com.zupacademy.rafaela.proposta.config.exception;
 
-public class FieldErrorDTO {
+public class ErrorResponse {
     private String field;
     private String message;
 
-    public FieldErrorDTO(String field, String message) {
+    public ErrorResponse(String field, String message) {
         this.field = field;
         this.message = message;
     }
