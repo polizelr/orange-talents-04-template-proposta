@@ -1,6 +1,7 @@
 package br.com.zupacademy.rafaela.proposta.Proposal;
 
 import br.com.zupacademy.rafaela.proposta.config.exception.ApiRequestException;
+import br.com.zupacademy.rafaela.proposta.services.FinancialAnalysisService.FinancialAnalysisService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,9 +18,11 @@ import java.util.Optional;
 @RequestMapping("api/v1/proposta")
 public class ProposalController {
     private final ProposalRepository proposalRepository;
+    private final FinancialAnalysisService financialAnalysisService;
 
-    public ProposalController(ProposalRepository proposalRepository){
+    public ProposalController(ProposalRepository proposalRepository, FinancialAnalysisService financialAnalysisService){
         this.proposalRepository = proposalRepository;
+        this.financialAnalysisService = financialAnalysisService;
     }
 
     @PostMapping
@@ -30,7 +33,13 @@ public class ProposalController {
         }
         Proposal proposal = proposalRequest.convert();
         proposalRepository.save(proposal);
+
+        financialAnalysisService.financialAnalysis(proposal);
+        proposalRepository.save(proposal);
+
         URI uri = uriBuilder.path("/proposta/{id}").buildAndExpand(proposal.getId()).toUri();
         return ResponseEntity.created(uri).body(new ProposalResponse(proposal));
     }
+
+
 }

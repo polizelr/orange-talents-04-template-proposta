@@ -1,5 +1,7 @@
 package br.com.zupacademy.rafaela.proposta.Proposal;
 
+import br.com.zupacademy.rafaela.proposta.utils.enums.ProposalStatusEnum;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -37,6 +39,9 @@ public class Proposal {
     @Column(nullable = false)
     private BigDecimal salary;
 
+    @Enumerated(EnumType.STRING)
+    private ProposalStatusEnum status =  ProposalStatusEnum.NAO_ANALISADO;
+
     public Proposal(String document, String email, String name, String address, BigDecimal salary) {
         this.document = document;
         this.email = email;
@@ -47,6 +52,10 @@ public class Proposal {
 
     @Deprecated
     public Proposal() {
+    }
+
+    public void setStatus(ProposalStatusEnum status) {
+        this.status = status;
     }
 
     public Long getId() {
@@ -71,5 +80,9 @@ public class Proposal {
 
     public BigDecimal getSalary() {
         return salary;
+    }
+
+    public ProposalStatusEnum getStatus() {
+        return status;
     }
 }
