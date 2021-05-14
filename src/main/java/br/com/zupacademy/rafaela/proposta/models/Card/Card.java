@@ -36,4 +36,16 @@ public class Card {
     @Deprecated
     public Card() {
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

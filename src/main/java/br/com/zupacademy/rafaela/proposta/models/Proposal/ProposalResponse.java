@@ -1,6 +1,10 @@
 package br.com.zupacademy.rafaela.proposta.models.Proposal;
 
+import br.com.zupacademy.rafaela.proposta.models.Card.Card;
+import br.com.zupacademy.rafaela.proposta.models.Card.CardResponse;
+
 import java.math.BigDecimal;
+import java.util.Optional;
 
 public class ProposalResponse {
     private Long id;
@@ -9,6 +13,8 @@ public class ProposalResponse {
     private String name;
     private String address;
     private BigDecimal salary;
+    private Optional<CardResponse> card;
+
 
     public ProposalResponse(Proposal proposal){
         this.id = proposal.getId();
@@ -17,6 +23,7 @@ public class ProposalResponse {
         this.name = proposal.getName();
         this.address = proposal.getAddress();
         this.salary = proposal.getSalary();
+        this.card = proposal.getCard() != null ? Optional.of(new CardResponse(proposal.getCard())) : Optional.empty();
     }
 
     public Long getId() {
@@ -41,5 +48,9 @@ public class ProposalResponse {
 
     public BigDecimal getSalary() {
         return salary;
+    }
+
+    public Optional<CardResponse> getCard() {
+        return card;
     }
 }
