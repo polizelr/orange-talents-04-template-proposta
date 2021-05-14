@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Optional;
@@ -26,6 +27,7 @@ public class ProposalController {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<?> addProposal(@Valid @RequestBody ProposalRequest proposalRequest, UriComponentsBuilder uriBuilder){
         Optional<Proposal> proposalByDocument = proposalRepository.findProposalByDocument(proposalRequest.getDocument());
         if(proposalByDocument.isPresent()){
