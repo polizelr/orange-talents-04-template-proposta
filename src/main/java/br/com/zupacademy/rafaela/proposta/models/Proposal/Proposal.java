@@ -1,6 +1,6 @@
-package br.com.zupacademy.rafaela.proposta.Proposal;
+package br.com.zupacademy.rafaela.proposta.models.Proposal;
 
-import br.com.zupacademy.rafaela.proposta.Card.Card;
+import br.com.zupacademy.rafaela.proposta.models.Card.Card;
 import br.com.zupacademy.rafaela.proposta.utils.enums.ProposalStatusEnum;
 
 import javax.persistence.*;

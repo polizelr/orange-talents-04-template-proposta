@@ -1,4 +1,4 @@
-package br.com.zupacademy.rafaela.proposta.Proposal;
+package br.com.zupacademy.rafaela.proposta.models.Proposal;
 
 import br.com.zupacademy.rafaela.proposta.config.exception.ApiRequestException;
 import br.com.zupacademy.rafaela.proposta.services.FinancialAnalysisService.FinancialAnalysisService;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 

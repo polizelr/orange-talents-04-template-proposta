@@ -1,6 +1,6 @@
 package br.com.zupacademy.rafaela.proposta.services.CardResourceService;
 
-import br.com.zupacademy.rafaela.proposta.Card.Card;
+import br.com.zupacademy.rafaela.proposta.models.Card.Card;
 
 import java.time.LocalDateTime;
 

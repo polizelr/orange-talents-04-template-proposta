@@ -1,8 +1,8 @@
 package br.com.zupacademy.rafaela.proposta.services.CardResourceService;
 
-import br.com.zupacademy.rafaela.proposta.Card.Card;
-import br.com.zupacademy.rafaela.proposta.Proposal.Proposal;
-import br.com.zupacademy.rafaela.proposta.Proposal.ProposalRepository;
+import br.com.zupacademy.rafaela.proposta.models.Card.Card;
+import br.com.zupacademy.rafaela.proposta.models.Proposal.Proposal;
+import br.com.zupacademy.rafaela.proposta.models.Proposal.ProposalRepository;
 import br.com.zupacademy.rafaela.proposta.utils.enums.ProposalStatusEnum;
 import br.com.zupacademy.rafaela.proposta.utils.transactions.TransactionExecutor;
 import org.springframework.scheduling.annotation.Scheduled;

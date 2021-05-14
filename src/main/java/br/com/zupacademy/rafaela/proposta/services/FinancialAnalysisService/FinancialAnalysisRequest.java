@@ -1,6 +1,6 @@
 package br.com.zupacademy.rafaela.proposta.services.FinancialAnalysisService;
 
-import br.com.zupacademy.rafaela.proposta.Proposal.Proposal;
+import br.com.zupacademy.rafaela.proposta.models.Proposal.Proposal;
 
 public class FinancialAnalysisRequest {
     private String documento;

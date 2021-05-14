@@ -1,4 +1,4 @@
-package br.com.zupacademy.rafaela.proposta.Card;
+package br.com.zupacademy.rafaela.proposta.models.Card;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
