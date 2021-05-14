@@ -134,7 +134,40 @@ services:
       VAULT_TOKEN: ee413645-dbe8-4848-afc6-6bb2768ada75
       VAULT_ADDR: http://127.0.0.1:8200
 
+  postgresproposta:
+    image: 'postgres:alpine'
+    volumes:
+      - postgres-proposta-volume:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: proposta
+      POSTGRES_HOST: postgresproposta
+
+  proposta:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    image: polizelr/proposta
+    restart: on-failure
+    container_name: proposta
+    ports:
+    - "8080:8080"
+    depends_on:
+      - postgresproposta
+      - analise
+      - contas
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgresproposta:5432/proposta
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: password
+      ANALISE_URL: http://analise:9999/api/solicitacao
+      CARTOES_URL: http://contas:8888/api/cartoes
+
 volumes:
   grafana-volume:
   prometheus-volume:
   postgres-volume:
+  postgres-proposta-volume:
