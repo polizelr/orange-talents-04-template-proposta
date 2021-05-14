@@ -2,6 +2,7 @@ package br.com.zupacademy.rafaela.proposta.Proposal;
 
 import br.com.zupacademy.rafaela.proposta.config.exception.ApiRequestException;
 import br.com.zupacademy.rafaela.proposta.services.FinancialAnalysisService.FinancialAnalysisService;
+import br.com.zupacademy.rafaela.proposta.utils.transactions.TransactionExecutor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,31 +14,31 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/proposta")
 public class ProposalController {
     private final ProposalRepository proposalRepository;
     private final FinancialAnalysisService financialAnalysisService;
+    private final TransactionExecutor transaction;
 
-    public ProposalController(ProposalRepository proposalRepository, FinancialAnalysisService financialAnalysisService){
+    public ProposalController(ProposalRepository proposalRepository, FinancialAnalysisService financialAnalysisService, TransactionExecutor transaction){
         this.proposalRepository = proposalRepository;
         this.financialAnalysisService = financialAnalysisService;
+        this.transaction = transaction;
     }
 
     @PostMapping
-    @Transactional
     public ResponseEntity<?> addProposal(@Valid @RequestBody ProposalRequest proposalRequest, UriComponentsBuilder uriBuilder){
-        Optional<Proposal> proposalByDocument = proposalRepository.findProposalByDocument(proposalRequest.getDocument());
-        if(proposalByDocument.isPresent()){
+
+        if(proposalRepository.existsProposalByDocument(proposalRequest.getDocument())){
             throw new ApiRequestException("Document already exists", HttpStatus.UNPROCESSABLE_ENTITY, "document");
         }
         Proposal proposal = proposalRequest.convert();
-        proposalRepository.save(proposal);
+        transaction.saveAndCommit(proposal);
 
         financialAnalysisService.financialAnalysis(proposal);
-        proposalRepository.save(proposal);
+        transaction.updateAndCommit(proposal);
 
         URI uri = uriBuilder.path("/proposta/{id}").buildAndExpand(proposal.getId()).toUri();
         return ResponseEntity.created(uri).body(new ProposalResponse(proposal));
