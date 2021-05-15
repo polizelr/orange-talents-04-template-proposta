@@ -1,6 +1,5 @@
 package br.com.zupacademy.rafaela.proposta.models.Card;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 public class CardResponse {

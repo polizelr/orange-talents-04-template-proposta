@@ -1,7 +1,10 @@
 package br.com.zupacademy.rafaela.proposta.models.Card;
 
+import br.com.zupacademy.rafaela.proposta.models.Biometry.Biometry;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(
@@ -27,6 +30,9 @@ public class Card {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "card", orphanRemoval = true)
+    private List<Biometry> biometrics;
 
     public Card(String cardNumber, LocalDateTime createdAt) {
         this.cardNumber = cardNumber;
