@@ -159,12 +159,16 @@ services:
       - postgresproposta
       - analise
       - contas
+      - keycloak
     environment:
       DATABASE_URL: jdbc:postgresql://postgresproposta:5432/proposta
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: password
       ANALISE_URL: http://analise:9999/api/solicitacao
       CARTOES_URL: http://contas:8888/api/cartoes
+      KEYCLOAK_ISSUER_URI: http://keycloak:8080/auth/realms/proposta
+      KEYCLOAK_JWKS_URI: http://keycloak:8080/auth/realms/proposta/protocol/openid-connect/certs
+
 
 volumes:
   grafana-volume:
