@@ -13,4 +13,7 @@ public interface CardResourceClient {
 
     @PostMapping("/{id}/bloqueios")
     BlockCardResponse blockCard(@PathVariable("id") String cardId, BlockCardRequest request);
+
+    @PostMapping("{id}/avisos")
+    NoticeTravelResponse noticeTravel(@PathVariable("id") String cardId, NoticeTravelRequest request);
 }
