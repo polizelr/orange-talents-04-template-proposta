@@ -2,15 +2,16 @@ package br.com.zupacademy.rafaela.proposta.models.Block;
 
 import br.com.zupacademy.rafaela.proposta.models.Card.Card;
 import br.com.zupacademy.rafaela.proposta.models.Card.CardRepository;
+import br.com.zupacademy.rafaela.proposta.services.CardResourceService.BlockCardRequest;
+import br.com.zupacademy.rafaela.proposta.services.CardResourceService.BlockCardResponse;
+import br.com.zupacademy.rafaela.proposta.services.CardResourceService.CardResourceClient;
+import br.com.zupacademy.rafaela.proposta.utils.transactions.TransactionExecutor;
+import feign.FeignException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 @RestController
@@ -20,13 +21,18 @@ public class BlockController {
 
     private final CardRepository cardRepository;
 
-    public BlockController(BlockRepository blockRepository, CardRepository cardRepository){
+    private final CardResourceClient cardResourceClient;
+
+    private final TransactionExecutor executor;
+
+    public BlockController(BlockRepository blockRepository, CardRepository cardRepository, CardResourceClient cardResourceClient, TransactionExecutor executor) {
         this.blockRepository = blockRepository;
         this.cardRepository = cardRepository;
+        this.cardResourceClient = cardResourceClient;
+        this.executor = executor;
     }
 
     @PostMapping("/{cardId}")
-    @Transactional
     public ResponseEntity<?> blockCard (@PathVariable Long cardId, HttpServletRequest request){
         Optional<Card> card = cardRepository.findById(cardId);
         if(card.isEmpty()){
@@ -41,7 +47,13 @@ public class BlockController {
 
         Block blockCard = new Block(ipAddress, userAgent , card.get());
 
-        blockRepository.save(blockCard);
-        return ResponseEntity.ok().build();
+        try{
+            cardResourceClient.blockCard(card.get().getCardNumber(), new BlockCardRequest());
+            executor.saveAndCommit(blockCard);
+            return ResponseEntity.ok().build();
+        }
+        catch (FeignException exception){
+            return ResponseEntity.unprocessableEntity().build();
+        }
     }
 }

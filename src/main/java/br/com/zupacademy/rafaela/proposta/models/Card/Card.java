@@ -1,6 +1,7 @@
 package br.com.zupacademy.rafaela.proposta.models.Card;
 
 import br.com.zupacademy.rafaela.proposta.models.Biometry.Biometry;
+import br.com.zupacademy.rafaela.proposta.models.Block.Block;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -31,9 +32,6 @@ public class Card {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "card", orphanRemoval = true)
-    private List<Biometry> biometrics;
-
     public Card(String cardNumber, LocalDateTime createdAt) {
         this.cardNumber = cardNumber;
         this.createdAt = createdAt;
@@ -54,4 +52,5 @@ public class Card {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
 }
