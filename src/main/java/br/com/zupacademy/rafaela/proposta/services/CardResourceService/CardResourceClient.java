@@ -16,4 +16,8 @@ public interface CardResourceClient {
 
     @PostMapping("{id}/avisos")
     NoticeTravelResponse noticeTravel(@PathVariable("id") String cardId, NoticeTravelRequest request);
+
+    @PostMapping("{id}/carteiras")
+    void associateDigitalWallet(@PathVariable("id") String cardId, DigitalWalletFeignRequest request);
+
 }
