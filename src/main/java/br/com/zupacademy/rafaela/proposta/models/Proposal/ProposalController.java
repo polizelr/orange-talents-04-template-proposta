@@ -3,8 +3,6 @@ package br.com.zupacademy.rafaela.proposta.models.Proposal;
 import br.com.zupacademy.rafaela.proposta.config.exception.ApiRequestException;
 import br.com.zupacademy.rafaela.proposta.services.FinancialAnalysisService.FinancialAnalysisService;
 import br.com.zupacademy.rafaela.proposta.utils.transactions.TransactionExecutor;
-import io.opentracing.Span;
-import io.opentracing.Tracer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +18,11 @@ public class ProposalController {
     private final ProposalRepository proposalRepository;
     private final FinancialAnalysisService financialAnalysisService;
     private final TransactionExecutor transaction;
-    private final Tracer tracer;
 
-    public ProposalController(ProposalRepository proposalRepository, FinancialAnalysisService financialAnalysisService, TransactionExecutor transaction, Tracer tracer){
+    public ProposalController(ProposalRepository proposalRepository, FinancialAnalysisService financialAnalysisService, TransactionExecutor transaction){
         this.proposalRepository = proposalRepository;
         this.financialAnalysisService = financialAnalysisService;
         this.transaction = transaction;
-        this.tracer = tracer;
     }
 
     @PostMapping
@@ -36,12 +32,6 @@ public class ProposalController {
         }
         Proposal proposal = proposalRequest.convert();
         transaction.saveAndCommit(proposal);
-
-        Span activeSpan = tracer.activeSpan();
-        activeSpan.setTag("user.email", proposal.getEmail());
-
-        String userEmail = activeSpan.getBaggageItem(proposal.getEmail());
-        activeSpan.setBaggageItem("user.email", userEmail);
 
         financialAnalysisService.financialAnalysis(proposal);
         transaction.updateAndCommit(proposal);
