@@ -31,8 +31,8 @@ public class CardResourceScheduler {
         Set<Proposal> proposals = proposalRepository.findProposalByStatusAndCard(ProposalStatusEnum.ELEGIVEL, null);
 
         proposals.forEach(proposal -> {
-            Span activeSpan = tracer.activeSpan();
-            activeSpan.setBaggageItem("user.email", "orange@talents.com");
+//            Span activeSpan = tracer.activeSpan();
+//            activeSpan.setBaggageItem("user.email", "orange@talents.com");
             CardResourceResponse cardResponse = cardResourceClient.getCard(proposal.getId().toString());
             Card card = cardResponse.convert();
             transaction.saveAndCommit(card);

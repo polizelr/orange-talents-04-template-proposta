@@ -2,6 +2,7 @@ package br.com.zupacademy.rafaela.proposta.models.Card;
 
 import br.com.zupacademy.rafaela.proposta.models.Biometry.Biometry;
 import br.com.zupacademy.rafaela.proposta.models.Block.Block;
+import br.com.zupacademy.rafaela.proposta.utils.cryptography.DataConverter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ public class Card {
     private Long id;
 
     @Column(nullable = false)
+    @Convert(converter = DataConverter.class)
     private String cardNumber;
 
     @Column(nullable = false)
